@@ -1,44 +1,21 @@
+using MyPkg
 using Documenter
-#using DocumenterLaTeX
 
-################################################################################
-# How to generate the document
-# Run the following command from the docs/ directory
-# >julia make.jl
-
-# How to see the document
-# Run the following command from the build/ directory
-# >python -m http.server --bind localhost
-# See http://localhost:8000 in your browser
-
-# Math typesetting
-# Documenter uses KaTeX
-# https://katex.org/
-
-# Generate Sass files.
-for w in ("light", "dark")
-    header = read(joinpath(@__DIR__, "style.scss"), String)
-    theme = read(joinpath(@__DIR__, "$(w)defs.scss"), String)
-    write(joinpath(@__DIR__, "$(w).scss"), header*"\n"*theme)
-end
-
-# Compile Sass files.
-using DocumenterTools: Themes
-Themes.compile(joinpath(@__DIR__, "light.scss"), joinpath(@__DIR__, "src/assets/themes/documenter-light.css"))
-Themes.compile(joinpath(@__DIR__, "dark.scss"), joinpath(@__DIR__, "src/assets/themes/documenter-dark.css"))
-
-# Generate HTML files.
-makedocs(
-    sitename = "Shoichiro Tsutsui's Web Page",
-    authors = "Shoichiro Tsutsui",
-    doctest = false,
-    clean = true,
-    linkcheck = false,
-    pages = [
+makedocs(;
+    modules=[MyPkg],
+    authors="tsutsui <shoppa99.nanone@hotmail.co.jp> and contributors",
+    repo="https://github.com/Shoichiro-Tsutsui/MyPkg.jl/blob/{commit}{path}#L{line}",
+    sitename="MyPkg.jl",
+    format=Documenter.HTML(;
+        prettyurls=get(ENV, "CI", "false") == "true",
+        canonical="https://Shoichiro-Tsutsui.github.io/MyPkg.jl",
+        assets=String[],
+    ),
+    pages=[
         "Home" => "index.md",
-        "CV" => "cv.md",
-        "Publications" => "publications.md",
-        "Presentationss" => "presentations.md",
-        "Links" => "links.md"
-        ],
-    )
+    ],
+)
+
+deploydocs(;
+    repo="github.com/Shoichiro-Tsutsui/MyPkg.jl",
+)
